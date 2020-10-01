@@ -119,6 +119,10 @@
           }
         }
       }
-    }},
-  "defaultProject": "dz5"
+    }
+  },
+  "defaultProject": "dz5",
+  "cli": {
+    "analytics": false
+  }
 }
