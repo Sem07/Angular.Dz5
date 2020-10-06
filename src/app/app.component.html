@@ -1,17 +1,38 @@
-<div>
-<select name="select" (ngModelChange)="z(user.id)">
-  <option [ngValue]="null">All</option>
-  <option *ngFor="let user of userList" [value]="user.id" #id = 'ngModel'>
-    {{user.id}}
-  </option>
-</select>
-<form >
- <p>Id: <input type="text" name="id"> </p> 
- <p>Name:<input type="text" name="name"> </p> 
- <p>Username: <input type="text" [(ngModel)]="usernam" name="username"></p>
- <p>Email: <input type="email" name="email"></p>
- <p>Phine:<input type="tel" name="phone"></p> 
- <p>Website: <input type="text" name="website"></p>
-</form>
+<div >
+  <h4>Select user Id</h4>
+  <select name="select" [(ngModel)]="userId" (change)="getUser()">
+    <option *ngFor="let user of userList" [value]="user.id">
+      {{user.id}}
+    </option>
+  </select>
+
+
+  <form *ngIf="user" [formGroup]="userForm">
+    <p>Id: <input type="text" [(ngModel)]="user.id" formControlName="id"></p>
+    <p *ngIf="userForm.get('id').hasError('min')">Введіь число більше 0</p>
+    <p *ngIf="userForm.get('id').hasError('pattern')">Введіть тільки цифрові значення</p>
+
+    <p>Name:<input type="text" [(ngModel)]="user.name" formControlName="name"></p>
+    <p *ngIf="userForm.get('name').hasError('minlength')">Введіть слово довжиною більше 3 букв</p>
+    <p *ngIf="userForm.get('name').hasError('pattern')">Помилка вводу</p>
+
+    <p>Username: <input type="text" [(ngModel)]="user.username" formControlName="username"></p>
+    <p *ngIf="userForm.get('username').hasError('minlength')">Введіть слово довжиною більше 3 букв</p>
+    <p *ngIf="userForm.get('username').hasError('pattern')">Помилка вводу</p>
+
+    <p>Email: <input type="email" [(ngModel)]="user.email" formControlName="email"></p>
+    <p *ngIf="userForm.get('email').hasError('email')">Введіть email</p>
+    <p *ngIf="userForm.get('email').hasError('pattern')">Помилка вводу</p>
+
+    <p>Phone:<input type="tel" [(ngModel)]="user.phone" formControlName="phone"></p>
+    <p *ngIf="userForm.get('phone').getError('minlength')">Мінімальна кількість цифер поинна бути 10</p>
+    <p *ngIf="userForm.get('phone').getError('pattern')">Помилка вводу</p>
+
+    <p>Website: <input type="text" [(ngModel)]="user.website" formControlName="website"></p>
+    <p *ngIf="userForm.get('website').getError('pattern')">Помилка вводу</p>
+
+    <button type="submit" [disabled]="userForm.invalid" (click)="alertUser()">Show</button>
+  </form>
+
+
 </div>
-<button (click)="y()">Show</button>
